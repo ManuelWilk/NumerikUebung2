@@ -10,9 +10,23 @@ namespace NumerikUebung2
     {
         static void Main(string[] args)
         {
-            //Matrix Erstellen
-            double[,] matrixA = { { 1, 2, 3 }, { 6, 5, 4 }, { 7, 8, 9 } };
-            double[,] matrixB = { { 0, 3, 4 }, { 1, 2, 3 }, { -2, 5, 6 } };
+            //Matrix A erstellen:
+            Console.WriteLine("Anzahl Zeilen der 1ten Matrix engeben:");
+            int rows1 = int.Parse(Console.ReadLine());
+            Console.WriteLine("Anzahl Spalten der 1ten Matrix engeben:");
+            int cols1 = int.Parse(Console.ReadLine());
+            double[,] matrixA = CreateMatrix(rows1, cols1);
+
+            //Matrix B erstellen:
+            Console.WriteLine("Anzahl Zeilen der 2ten Matrix engeben:");
+            int rows2 = int.Parse(Console.ReadLine());
+            Console.WriteLine("Anzahl Spalten der 2ten Matrix engeben:");
+            int cols2 = int.Parse(Console.ReadLine());
+            double[,] matrixB = CreateMatrix(rows2, cols2);
+
+            //Matrizen zum Testen ohne Nutzereingabe
+            //double[,] matrixA = { { 1, 2, 3 }, { 6, 5, 4 }, { 7, 8, 9 } };
+            //double[,] matrixB = { { 0, 3, 4 }, { 1, 2, 3 }, { -2, 5, 6 } };
 
             //Ausgeben der Matrizen mit PrintMatrix
             Console.WriteLine("Matrix A:");
@@ -67,6 +81,22 @@ namespace NumerikUebung2
                 Console.WriteLine("Fehler : Multiplikation nicht möglich");
                 return produktmatrix;
             }
+        }
+
+        static double[,] CreateMatrix(int rows, int cols)
+        {
+            double[,] matrix = new double[rows, cols];
+            double userinput;
+            for (int i = 0; i < rows; i++)
+            {
+                for (int j = 0; j < cols; j++)
+                {
+                    Console.Write("Zeile {0} Spalte {1}: ", i + 1, j + 1);
+                    userinput = double.Parse(Console.ReadLine());
+                    matrix[i, j] = userinput;
+                }
+            }
+            return matrix;
         }
     }
 }
