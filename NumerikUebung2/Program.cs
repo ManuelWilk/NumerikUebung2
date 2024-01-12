@@ -10,8 +10,8 @@ namespace NumerikUebung2
     {
         static void Main(string[] args)
         {
-            //Auswahl zwischen Multiplikation, LR-Zerlegung
-            Console.WriteLine("Was möchten Sie tun?"+ '\n'+ "1.Multiplikation" + '\n' + "2.LR-Zerlegung");
+            //Auswahl zwischen Multiplikation, LR-Zerlegung, Inverse
+            Console.WriteLine("Was möchten Sie tun?"+ '\n'+ "1.Multiplikation" + '\n' + "2.LR-Zerlegung" + '\n' + "3.Inverse");
             int choice = int.Parse(Console.ReadLine());
 
             //Multiplikation
@@ -49,7 +49,7 @@ namespace NumerikUebung2
             //LR-Zerlegung
             if (choice == 2)
             {
-                Console.WriteLine("Dimension der Matrix eingeben");
+                Console.WriteLine("Dimension der Matrix eingeben:");
                 int dim = int.Parse(Console.ReadLine());
                 double[,] matrix = CreateMatrix(dim,dim);
                 double[,] Lm = new double[dim, dim];
@@ -95,6 +95,31 @@ namespace NumerikUebung2
                 Console.WriteLine("Zum beenden beliebige Taste drücken...");
                 Console.ReadLine();
             }
+
+            //Inverse
+            if (choice==3)
+            {
+                Console.WriteLine("Dimension der Matrix eingeben:");
+                int dim = int.Parse(Console.ReadLine());
+                double[,] matrix = CreateMatrix(dim, dim);
+                Console.WriteLine("Ihre Matrix:");
+                PrintMatrix(matrix);
+                double[,] matrixInverse = InvertMatrix(matrix, dim);
+                bool invPoss = CheckInverse(matrixInverse, dim);
+
+                if (invPoss == true)
+                {
+                    Console.WriteLine("Inverse:");
+                    PrintMatrix(matrixInverse);
+                }
+                else
+                {
+                    Console.WriteLine("Diese Matrix besitzt keine Inverse");
+                }
+                Console.WriteLine("Zum beenden beliebige Taste drücken...");
+                Console.ReadLine();
+            }
+
             else
             {
                 Console.WriteLine("Ungültige Eingabe");
@@ -159,5 +184,66 @@ namespace NumerikUebung2
             }
             return matrix;
         }
+
+        //Inverse berechnen
+        static double[,] InvertMatrix(double[,] matrix, int dim)
+        {
+            double[,] temp;
+            for (int i = 0; i < dim; i++)
+            {
+                temp = new double[dim, dim];
+                double y_temp = 1;
+                double x_temp;
+                x_temp = -matrix[i, i];
+                matrix[i, i] = -y_temp;
+
+                for (int j = 0; j < dim; j++)
+                {
+                    matrix[i, j] /= x_temp;
+                    temp[i, j] = matrix[i, j];
+                }
+
+                for (int z = 0; z < dim; z++)
+                {
+                    if (z == i)
+                    {
+                        continue;
+                    }
+                    else
+                    {
+                        for (int s = 0; s < dim; s++)
+                        {
+                            if (s == i)
+                            {
+                                temp[z, s] = matrix[z, s] * temp[i, s];
+                            }
+                            else
+                            {
+                                temp[z, s] = matrix[z, i] * temp[i, s] + matrix[z, s];
+                            }
+                        }
+                    }
+                }
+                matrix = temp;
+            }
+            return matrix;
+        }
+
+        //Prüfen ob Inverse existiert
+        static bool CheckInverse(double[,] matrix, int dim)
+        {
+            for (int i = 0; i < dim; i++)
+            {
+                for (int j = 0; j < dim; j++)
+                {
+                    if (double.IsNaN(matrix[i, j]))
+                    {
+                        return false;
+                    }
+                }
+            }
+            return true;
+        }
+
     }
 }
