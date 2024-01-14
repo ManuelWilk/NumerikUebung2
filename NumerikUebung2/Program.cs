@@ -43,11 +43,11 @@ namespace NumerikUebung2
 
                 //Programm beenden
                 Console.WriteLine("Zum beenden beliebige Taste drücken...");
-                Console.ReadLine();
+                Console.ReadKey();
             }
 
             //LR-Zerlegung
-            if (choice == 2)
+            else if (choice == 2)
             {
                 Console.WriteLine("Dimension der Matrix eingeben:");
                 int dim = int.Parse(Console.ReadLine());
@@ -93,11 +93,11 @@ namespace NumerikUebung2
                 Console.WriteLine("R-Matrix");
                 PrintMatrix(Rm);
                 Console.WriteLine("Zum beenden beliebige Taste drücken...");
-                Console.ReadLine();
+                Console.ReadKey();
             }
 
             //Inverse
-            if (choice==3)
+            else if (choice==3)
             {
                 Console.WriteLine("Dimension der Matrix eingeben:");
                 int dim = int.Parse(Console.ReadLine());
@@ -117,7 +117,7 @@ namespace NumerikUebung2
                     Console.WriteLine("Diese Matrix besitzt keine Inverse");
                 }
                 Console.WriteLine("Zum beenden beliebige Taste drücken...");
-                Console.ReadLine();
+                Console.ReadKey();
             }
 
             else
@@ -131,13 +131,20 @@ namespace NumerikUebung2
         //Matrizen Ausgeben
         static void PrintMatrix(double[,] matrix)
         {
-            for (int i = 0; i < matrix.GetLength(0); i++)
+            int rows = matrix.GetLength(0);
+            int columns = matrix.GetLength(1);
+
+            for (int i = 0; i < rows; i++)
             {
-                for (int j = 0; j < matrix.GetLength(1); j++)
+                for (int j = 0; j < columns; j++)
                 {
-                    Console.Write(" {0,3} ", matrix[i, j]);
+                    if (matrix[i, j] % 1 == 0)
+                        Console.Write($"{matrix[i, j],8:F0}   "); // Ganzzahl, keine Nachkommastellen
+                    else
+                        Console.Write($"{matrix[i, j],8:F2}   "); // Runden auf zwei Nachkommastellen
                 }
-                Console.Write('\n');
+                Console.WriteLine();
+                Console.WriteLine(); // Leerzeile zwischen den Zeilen
             }
         }
 
